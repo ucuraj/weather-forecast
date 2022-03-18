@@ -28,4 +28,6 @@ def date_to_string(date: datetime, f_output="%Y-%m-%dT%H:%M:%S"):
 
 
 def timestamp_to_date(value):
-    return datetime.fromtimestamp(value)
+    if value and isinstance(value, datetime) is False:
+        return datetime.fromtimestamp(float(value))
+    return None

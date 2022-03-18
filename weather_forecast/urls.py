@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.conf import settings
 from django.conf.urls import url, include
 from django.contrib import admin
@@ -50,6 +51,7 @@ class InfoApi(APIView):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', InfoApi.as_view(), name='info_api'),
+    url(r'^api/v1/oraculum/', include('api.oraculum.urls'), name="oraculum-v1"),
 ]
 
 if settings.DEBUG:

@@ -60,6 +60,8 @@ INSTALLED_APPS = [
     'django_filters',
     'django_extensions',
     'drf_yasg',
+
+    'api.oraculum'
 ]
 
 MIDDLEWARE = [
@@ -175,20 +177,22 @@ DEFAULT_CACHING_TIME = env.str('CACHE_TIMEOUT', default=60 * 10)
 
 # CACHE
 CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-        'LOCATION': env.str('CACHE_SERVER_URL', default='127.0.0.1:11211'),
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
         'TIMEOUT': DEFAULT_CACHING_TIME,
         "KEY_PREFIX": "weather_forecast"
     }
 }
-# 12 hours
 
 # REST FRAMEWORK
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
-        # 'rest_framework.permissions.AllowAny',
-        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.AllowAny',
+        # 'rest_framework.permissions.IsAuthenticated',
     ),
 
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -351,6 +355,9 @@ DATABASES = {
 DATABASE_URL = os.getenv('DATABASE_URL', None)
 if DATABASE_URL:
     DATABASES['default'] = env.db()
+
+OWM_API_URL = env.str('OWM_API_URL', default='https://api.openweathermap.org/data/2.5/')
+OWM_API_TOKEN = env.str('OWM_API_TOKEN', default='')
 
 # Incorporo las configuraciones locales - Las que hay que modificar por ambiente
 try:
