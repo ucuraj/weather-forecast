@@ -27,6 +27,8 @@ from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
+from apps.oraculum.views import forecast_weather_view
+
 schema_view = get_schema_view(
     openapi.Info(
         title="Weather Forecast API",
@@ -51,7 +53,10 @@ class InfoApi(APIView):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', InfoApi.as_view(), name='info_api'),
+
     url(r'^api/v1/oraculum/', include('apps.oraculum.urls'), name="oraculum-v1"),
+
+    path('', forecast_weather_view, name="weather-forecast-home")
 ]
 
 if settings.DEBUG:
@@ -59,7 +64,6 @@ if settings.DEBUG:
         url(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
         url(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
         url(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-
     ]
 if settings.MEDIA_URL == '/media/':
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

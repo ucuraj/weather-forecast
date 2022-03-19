@@ -8,7 +8,7 @@ from .api import WeatherForecastViewSet
 router = DefaultRouter()
 
 # Public Section
-router.register(r'weather-forecast', WeatherForecastViewSet, basename='weather-forecast-view-v1')
+router.register(r'weather-forecast', WeatherForecastViewSet, basename='weather-forecast-api-v1')
 
 urlpatterns = []
 

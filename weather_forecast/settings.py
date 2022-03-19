@@ -58,7 +58,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'django_filters',
-    # 'django_extensions', # dev
+    'django_extensions', # dev
     'drf_yasg',
 
     'apps.oraculum'
@@ -358,6 +358,8 @@ if DATABASE_URL:
 
 OWM_API_URL = env.str('OWM_API_URL', default='https://api.openweathermap.org/data/2.5/')
 OWM_API_TOKEN = env.str('OWM_API_TOKEN', default='')
+
+GOOGLE_MAPS_API_KEY = env.str('GOOGLE_MAPS_API_KEY', default='')
 
 # Incorporo las configuraciones locales - Las que hay que modificar por ambiente
 try:

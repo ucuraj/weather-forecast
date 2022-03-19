@@ -20,8 +20,7 @@ class WeatherForecastViewSet(mixins.ListModelMixin, GenericOptionalPageViewSet):
 
     serializers = {
         'default': WeatherForecastDetailSerializer,
-        'create': WeatherForecastSerializer,
-        'forecast': WeatherForecastSerializer,
+        'get_forecast': WeatherForecastSerializer,
     }
 
     def get_serializer_class(self):
@@ -44,11 +43,10 @@ class WeatherForecastViewSet(mixins.ListModelMixin, GenericOptionalPageViewSet):
         return Response(data=FORECAST_CHOICES_REVERSE, status=status.HTTP_200_OK)
 
     @action(methods=["GET"], detail=False)
-    def forecast(self, request, *args, **kwargs):
+    def get_forecast(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.GET)
         serializer.is_valid(raise_exception=True)
         validated_data = serializer.validated_data
-
         service = WeatherForecastService()
         instance = service.get_weather_forecast(validated_data)
         return Response(data=WeatherForecastDetailSerializer(instance).data, status=status.HTTP_200_OK)

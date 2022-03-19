@@ -1,0 +1,91 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Weather Forecast {% endblock %}
+
+{% block body_class %} weather-forecast {% endblock %}
+
+{% block jshead %}
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <link rel="stylesheet" href="static/css/styles.css">
+    <script src="static/js/map.js"></script>
+{% endblock jshead %}
+
+{% block content %}
+    <div class="page-header min-vh-55"
+         style="background-image: url('https://images.unsplash.com/photo-1630752708689-02c8636b9141?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2490&q=80')">
+        <span class="mask bg-gradient-dark opacity-6"></span>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 mx-auto">
+                    <div class="text-center">
+                        <h1 class="text-white">Weather Forecast</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card card-body shadow-xl mx-3 mx-md-4 mt-n6">
+        <div class="container">
+            <div class="section text-center">
+                <h2 class="title">Choose location to get Weather Forecast</h2>
+                <hr/>
+                <div class="map-container">
+                    <div id="map"></div>
+                </div>
+                <div class="mt-4">
+                    <h4>Weather Forecast Data</h4>
+
+                    <div>
+                        <label for="forecastTypeSelect">Select forecast</label>
+                        <select class="form-control selectpicker" data-style="btn btn-link" style="border: 1px solid"
+                                id="forecastTypeSelect">
+                            {% for option in forecast_types %}
+                                <option value={{ option.0 }} selected="selected">{{ option.1 }}</option>
+                            {% endfor %}
+                        </select>
+                        <button onclick="submitForm()" class="btn btn-sm">Refresh forecast data</button>
+                    </div>
+                    <hr/>
+
+                    <h6>Forecast type: {{ forecast_type|get_forecast_type }}</h6>
+
+                    <span><b>Timezone</b> {{ forecast_data.time_zone }}</span><br/>
+                    <span><b>Datetime</b> {{ forecast_data.dt }}</span><br/>
+                    <span><b>Latitude:</b> {{ forecast_data.lat }}</span><br/>
+                    <span><b>Longitude:</b> {{ forecast_data.lon }}</span><br/>
+                    {% for key, values in forecast_data.raw_data.items %}
+                        <tr>
+                            <td>{{ key }}</td>
+                            <td>
+                                <pre>{{ values }}</pre>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block javascripts %}
+    <script>
+        function submitForm() {
+            const url = new URL(window.location.href)
+            const host = url.origin
+            const forecastSelect = document.getElementById("forecastTypeSelect");
+            const forecastOption = forecastSelect.value;
+
+            if (lat && lon && forecastOption) {
+                const refreshUrl = `${host}?lat=${lat}&lon=${lon}&forecast_type=${forecastOption}&do_request=true`;
+                window.location.href = refreshUrl;
+            } else {
+                alert("please select a location")
+            }
+
+        }
+    </script>
+    <script
+            src="https://maps.googleapis.com/maps/api/js?key={{ maps_api_key }}&callback=initMap&v=weekly&channel=2"
+            async
+    ></script>
+{% endblock javascripts %}
