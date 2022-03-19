@@ -96,8 +96,8 @@ class WeatherForecast(models.Model):
             obj.persist_instance_cache()
         return obj, _created
 
-    @classmethod
-    def get_caching_key(cls, lat, lon, forecast_type):
+    @staticmethod
+    def get_caching_key(lat, lon, forecast_type):
         """returns the key for get/set the instance from/to cache"""
         lat = str(lat).replace(",", "").replace(".", "")
         lon = str(lon).replace(",", "").replace(".", "")
