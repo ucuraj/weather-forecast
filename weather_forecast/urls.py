@@ -51,7 +51,7 @@ class InfoApi(APIView):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', InfoApi.as_view(), name='info_api'),
-    url(r'^api/v1/oraculum/', include('api.oraculum.urls'), name="oraculum-v1"),
+    url(r'^api/v1/oraculum/', include('apps.oraculum.urls'), name="oraculum-v1"),
 ]
 
 if settings.DEBUG:

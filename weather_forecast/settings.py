@@ -58,10 +58,10 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'django_filters',
-    'django_extensions',
+    # 'django_extensions', # dev
     'drf_yasg',
 
-    'api.oraculum'
+    'apps.oraculum'
 ]
 
 MIDDLEWARE = [

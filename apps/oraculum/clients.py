@@ -3,6 +3,8 @@ import requests
 
 from django.conf import settings
 
+from apps.oraculum.models import CURRENT, MINUTELY, HOURLY, DAILY
+
 
 class OWMClientError(Exception):
     pass
@@ -10,6 +12,14 @@ class OWMClientError(Exception):
 
 class OWMClientDataError(OWMClientError):
     pass
+
+
+FORECAST_TYPES = {
+    CURRENT: 'current',
+    MINUTELY: 'minutely',
+    HOURLY: 'hourly',
+    DAILY: 'daily',
+}
 
 
 class OWMClient:
@@ -51,5 +61,6 @@ class OWMClient:
         response = requests.get(url)
         self.check_errors('get_weather_forecast_data', response)
         if process_response:
+            response.raise_for_status()
             return response.json()
         return response

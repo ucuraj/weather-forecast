@@ -3,12 +3,12 @@ from __future__ import unicode_literals
 
 from rest_framework.routers import DefaultRouter
 
-from .api import OraculumViewSet
+from .api import WeatherForecastViewSet
 
 router = DefaultRouter()
 
 # Public Section
-router.register(r'oraculum', OraculumViewSet, basename='oraculum-view-v1')
+router.register(r'weather-forecast', WeatherForecastViewSet, basename='weather-forecast-view-v1')
 
 urlpatterns = []
 
